@@ -197,6 +197,7 @@ public class TextInterface {
         int cmd;
         while (true) {
             clearConsole();
+            System.out.println("==========WELCOME==========");
             System.out.println("1. Login");
             System.out.println("2. Register");
             System.out.println("0. Exit");
