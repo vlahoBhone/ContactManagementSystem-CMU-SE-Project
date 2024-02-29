@@ -10,6 +10,5 @@ public class ContactManagementSystem {
         TextInterface textInterface = new TextInterface(f);
         textInterface.loginMenu(f);
     }
-
     
 }

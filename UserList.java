@@ -22,18 +22,14 @@ public class UserList extends ArrayList<User> {
     }
     
     public boolean authenticateUser(String username,String password){
-        boolean found=true;
         for(User u:this){
             if(u.getUsername().equals(username)){
                 if(u.getPassword().equals(password)){
                     return true;
                 }
             }
-            else {
-                found=false;
-            }
         }
-        return found;
+        return false;
 
     }
 }

@@ -21,7 +21,7 @@ public class TextInterface {
             clearConsole();
             System.out.println("****Home Menu****");
             System.out.println("\t1. Add Contact");
-            System.out.println("\t2. Display Contact-List");
+            System.out.println("\t2. View Contact-List");
             System.out.println("\t3. Search Contact");
             System.out.println("\t0. Logout");
             System.out.print("Enter your command: ");
@@ -48,7 +48,6 @@ public class TextInterface {
     }
 
     private void searchMenu() throws IOException {
-        //input.nextLine(); //-
         System.out.print("Search: ");
         String keyword = input.nextLine();
         do {
@@ -70,11 +69,11 @@ public class TextInterface {
         System.out.println("****Contact Menu****");
         System.out.println("\t1. View Contact Detail");
         System.out.println("\t2. Remove Contact");
-        System.out.println("\t3. Update Contact Information");
+        System.out.println("\t3. Edit Contact Information");
         System.out.println("\t4. Sort");
         System.out.println("\t0. Back");
         System.out.print("Enter command: ");
-        cmd = readInt(); // 2
+        cmd = readInt();
         switch (cmd) {
             case 1: {
                 index = chooseContactID();
@@ -107,9 +106,9 @@ public class TextInterface {
     private void sortMenu() throws IOException {
         clearConsole();
         System.out.println("1. By Name " + (contactList.sortedByName?"(current)":""));
-        System.out.println("2. By ID " + (contactList.sortedByName?"":"(current)"));
+        System.out.println("2. By Date Created " + (contactList.sortedByName?"":"(current)"));
         System.out.print("Sort by: ");
-        int sortType = readInt();  // 3
+        int sortType = readInt();
         switch (sortType) {
             case 1:
                 contactList.sortByName();
@@ -126,7 +125,7 @@ public class TextInterface {
     private int chooseContactID() {
         while (true) {
             System.out.print("Choose Contact ID: ");
-            int id = readInt();  // 4
+            int id = readInt();
             if (id < 1 || id > contactList.size()) {
                 System.out.println("Invalid ID");
             } else {
@@ -146,7 +145,7 @@ public class TextInterface {
             System.out.println("4. Address: " + contactList.get(index-1).getAddress());
             System.out.println("0. Finished updating");
             System.out.print("Choose the field to be updated: ");
-            field = readInt();  // 5
+            field = readInt();
             if (field == 0) break;
             contactList.updateContact(input, index, field);
             System.out.println("------------------------------------------");
@@ -222,7 +221,7 @@ public class TextInterface {
     }
 
     private File createContactsFile(String username) {
-        String filename = username + ".csv";
+        String filename = "Users\\" + username + ".csv";
         File contactsFile = new File(filename);
         return contactsFile;
     }
@@ -233,13 +232,18 @@ public class TextInterface {
         while (true) {
             System.out.println("Enter username: ");
             String name = input.nextLine();
-            System.out.println("Enter password: ");
-            String password = String.valueOf(System.console().readPassword());
-
-            if (name.isEmpty() || password.isEmpty()) {
-                System.out.println("Username or Password cannot be empty.");
+            if (name.isEmpty()) {
+                System.out.println("Username cannot be empty.");
                 continue;
             }
+
+            System.out.println("Enter password: ");
+            String password = String.valueOf(System.console().readPassword());
+            if (password.isEmpty()) {
+                System.out.println("Password cannot be empty.");
+                continue;
+            }
+
             if (userList.authenticateUser(name.trim(), password.trim())) {
                 File contactsFile = createContactsFile(name);
                 contactList = readContactList(contactsFile);
@@ -257,11 +261,15 @@ public class TextInterface {
         loop: while (true) {
             System.out.println("Enter username: ");
             String name = input.nextLine();
+            if (name.isEmpty()) {
+                System.out.println("Username cannot be empty.");
+                continue;
+            }
+
             System.out.println("Enter password: ");
             String password = String.valueOf(System.console().readPassword());
-
-            if (name.isEmpty() || password.isEmpty()) {
-                System.out.println("Username or Password cannot be empty.");
+            if (password.isEmpty()) {
+                System.out.println("Password cannot be empty.");
                 continue;
             }
 
@@ -275,7 +283,7 @@ public class TextInterface {
 
             User user = new User(name, password);
             userList.add(user);
-            String filename = name + ".csv";
+            String filename = "Users\\" + name + ".csv";
             File contactsFile = new File(filename);
             PrintWriter out = new PrintWriter(contactsFile);
             out.println("Null,Null,Null,Null");

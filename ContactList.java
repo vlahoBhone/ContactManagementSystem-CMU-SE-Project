@@ -12,14 +12,6 @@ public class ContactList extends ArrayList<Contact> {
     public void addContact(Scanner input) {
         Contact contact = new Contact();
         contact.setName(Contact.readName(input));
-        contact.setPhoneNum(Contact.readPhoneNum(input));
-        contact.setEmail(Contact.readEmail(input));
-        contact.setAddress(Contact.readAddress(input));
-
-        addContact(contact);
-    }
-
-    public void addContact(Contact contact) {
         for (Contact c : this) {
             if (contact.getName().equals(c.getName())) {
                 System.out.println("This contact name has already existed.");
@@ -28,6 +20,14 @@ public class ContactList extends ArrayList<Contact> {
                 return;
             }
         }
+        contact.setPhoneNum(Contact.readPhoneNum(input));
+        contact.setEmail(Contact.readEmail(input));
+        contact.setAddress(Contact.readAddress(input));
+
+        addContact(contact);
+    }
+
+    public void addContact(Contact contact) {
         this.add(contact);
         contact.setId(this.size());
         if (sortedByName) {
@@ -49,7 +49,6 @@ public class ContactList extends ArrayList<Contact> {
 
     public void updateContact(Scanner input, int index, int field) {
         Contact contact = this.get(index-1);
-        input.nextLine();
         switch(field) {
             case 1:
                 contact.setName(Contact.readName(input));
@@ -69,11 +68,16 @@ public class ContactList extends ArrayList<Contact> {
     }
 
     public void search(String keyword) {
+        boolean found = false;
         System.out.println("----------Search Result : " + keyword + "----------");
         for (int i = 0; i < this.size(); i++) {
             if (this.get(i).getName().toLowerCase().startsWith(keyword.toLowerCase())) {
                 System.out.println((i+1) + ". " + this.get(i).getName());
+                found = true;
             }
+        }
+        if (!found) {
+            System.out.println("No Such Contact");
         }
         System.out.println("--------------------------------------------------");
     }
